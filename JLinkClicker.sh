@@ -2,14 +2,12 @@
 
 for (( ; ; ))
 do
-	WID=$(xdotool search --name "J-Link\sV\w\.?\w{1,4}\s\-\sTerms\sof\suse")
-	#echo $WID
+	WID=$(xdotool search --sync --name "J-Link\sV\w\.?\w{1,4}\s\-\sTerms\sof\suse")
+	# echo found $WID
 	if [ -n "$WID" ]; then
-		sleep 0.5
-		xdotool windowfocus $WID
-		xdotool key --window $WID "alt+a"
-		echo "found"
-		sleep 0.5
+		if xdotool windowfocus --sync $WID; then
+			xdotool key --window $WID "alt+a"
+			xdotool keyup	 "alt+a"	# Sometimes remains pressed when some error occurs
+		fi
 	fi
-	sleep 0.1
 done
